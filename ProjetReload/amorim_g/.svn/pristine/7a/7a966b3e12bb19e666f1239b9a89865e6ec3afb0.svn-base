@@ -1,0 +1,85 @@
+/*
+** fondation.c for fondation in /Users/amorimgregory/Documents/projet_fondation
+** 
+** Made by Amorim Gregory
+** Login   <amorim_g@etna-alternance.net>
+** 
+** Started on  Fri Feb  6 16:39:16 2015 Amorim Gregory
+** Last update Fri Apr 24 16:47:14 2015 Amorim Gregory
+*/
+
+#include "error.h"
+
+int    error()
+{
+  int fp;
+  char *e;
+
+ if (errno == 0)
+  {
+    my_putstr("No errors.");
+    my_putstr("\n");
+    return 0;
+  }
+ else if(errno != 0)
+  {
+    fp = open("logs.txt", O_APPEND | O_WRONLY | O_CREAT);
+    e = strerror(errno);
+    display(fp, e);
+    return 1;
+  }
+ return (0);
+}
+
+int display(int f, char *er)
+  {
+    /* lire l'heure courante */
+    time_t now = time (NULL);
+    /* convertir en heure locale */
+    struct tm tm_now = *localtime (&now);
+    /* creer une chaine JJ/MM/AAAA HH:MM:SS */
+    char s_now[sizeof "JJ/MM/AAAA HH:MM:SS"];
+    strftime (s_now, sizeof s_now, "%d/%m/%Y %H:%M:%S", &tm_now);
+
+    my_putstr(s_now);
+    my_putstr(" : ");
+    write(f, s_now, sizeof(s_now));
+    write(f, " : ", sizeof(" : "));
+    write(f, er, my_strlen(er));
+    write(f, "\n", sizeof("\n"));
+    my_putstr(er);
+    my_putstr("\n");
+    close(f);
+    errno = 0;
+    return (0);
+  }
+
+int    verif()
+  {
+    int fp;
+    int fp2;
+    char *a ;
+
+    a = "String de test !!! ";
+    my_putstr(a);
+    my_putstr("\n");
+    error();
+    fp = open("tto", O_RDONLY);
+    error();
+    write(fp, "toto", my_strlen("toto"));
+    error();
+    my_strcmp("toto", "toto");
+    error();
+    fp2 = open("titi.txt", O_RDONLY);
+    write(fp2, "toto", my_strlen("toto"));
+    error();
+    return (0);
+  }
+
+
+int    main()
+  {
+    verif();
+    return (0);
+  }
+

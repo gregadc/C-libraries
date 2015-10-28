@@ -1,0 +1,83 @@
+#include "parse.h"
+
+void		affiche_option(t_option *list)
+{
+    t_option	*tmp;
+    
+    tmp = list;
+    while (tmp != NULL)
+    {
+        my_putstr("my_opt : ");
+        my_putstr(tmp->option);
+        my_putstr("\n");
+        tmp = tmp->suivant;
+    }
+}
+
+void	affiche_argument(t_arg *list)
+{
+  t_arg	*tmp;
+
+  tmp = list;
+  while (tmp != NULL)
+    {
+      my_putstr("my_opt : ");
+      my_putstr(tmp->option);
+      my_putstr("\n");
+      my_putstr("my_arg : ");
+      my_putstr(tmp->argument);
+      my_putstr("\n");
+      my_putstr("is_arg : ");
+            my_put_nbr(tmp->action);
+      my_putstr("\n\n");
+      tmp = tmp->suivant;
+    }
+}
+
+t_arg		*my_parse(int argc,char *argv[],t_option *opt)
+{
+    t_option	*temp;
+    t_arg		*arg;
+    int		i;
+    
+    arg = NULL;
+    for (temp = opt; temp != NULL; temp = temp->suivant)
+    {
+        for (i = 1; i < argc; i++)
+        {
+            if (my_strcmp(argv[i], temp->option) == 0)
+            {
+                /*if (temp->action == 0)
+                {
+                    arg = argument_add(arg, temp, "NULL");
+                }
+                else
+                {*/
+                    if (((i + 1) < argc)  && (!option(opt, argv[i + 1])))
+                    {
+                        i++;
+                        arg = argument_add(arg, temp, argv[i]);
+                    }
+	       //} 
+            }
+        }
+    }
+    return (arg);
+}
+
+int		option(t_option *opt, char *valeur)
+{
+  t_option	*tmp;
+  
+  tmp = opt;
+  while (tmp != NULL)
+    {
+      if (my_strcmp(tmp->option, valeur) == 0)
+      {
+          return (1);
+      }
+      tmp = tmp->suivant;
+    }
+  return (0);
+}
+

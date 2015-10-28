@@ -1,0 +1,35 @@
+#include <stdlib.h>
+#include <unistd.h>
+#include <stdio.h>
+
+
+typedef struct			s_option
+{
+	char			*option;
+  //int			action;
+	struct	s_option	*suivant;
+}				t_option;
+
+typedef struct		s_arg
+{
+	char		*option;
+	char		*argument;
+  //int		action;
+	struct	s_arg	*suivant;
+}			t_arg;
+
+
+
+t_option	*option_add(t_option *opt, char *str);
+t_option	*option_del(t_option *list);
+t_arg		*argument_del(t_arg *list);
+void		affiche_option(t_option *list);
+void		affiche_argument(t_arg *list);
+t_arg		*my_parse(int argc,char *argv[],t_option *opt);
+t_arg		*argument_add(t_arg *arg, t_option *opt, char *my_arg);
+int		    option(t_option *opt, char *valeur);
+void 		my_putchar(char c);
+void		my_putstr(char *str);
+void		my_put_nbr(int n);
+int		    my_strcmp(char *s1, char *s2);
+
